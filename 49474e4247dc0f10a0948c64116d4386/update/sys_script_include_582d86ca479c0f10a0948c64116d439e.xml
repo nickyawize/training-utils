@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>global.RequestUtils</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>RequestUtils</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var RequestUtils = Class.create();
+
+
+RequestUtils.prototype = {
+    initialize: function() {},
+
+    shouldApplyFilter: function(current) {
+
+        // Never filter background system processes (Jobs, Integrations)
+        if (!gs.getSession().isInteractive()) return false;
+
+        const transaction = GlideTransaction.get();
+
+        if (!transaction) return false;
+
+        const requestURL = transaction.getRequest().getRequestURL().toString();
+
+        // IDENTIFY THE SCENARIO
+        // Scenario A: Standard List View (Usually contains 'incident_list.do')
+        const isList = requestURL.indexOf('_list.do') > -1;
+
+        // Scenario B: Global Search (User typing in the top-right search bar)
+        const isGlobalSearch = requestURL.indexOf('sys_search.do') > -1;
+
+        // Scenario C: Reference Lookup (The magnifying glass)
+        const isLookup = requestURL.indexOf('xmlhttp.do') > -1 &&
+            transaction.getRequestParameter('sysparm_processor') == 'XMLHttpLookup';
+
+        // Apply filtering ONLY if it's a primary list view or global search
+        // We exclude scenarios like 'fetching a single row' or 'distinct counts'
+        return isList || isGlobalSearch || isLookup;
+    },
+
+    getOperation: function(current, previous) {
+        // 1. Check for Query
+        // In a Query trigger, current exists but has no Sys ID and isn't a "New Record"
+        if (!current.getUniqueValue() && !current.isNewRecord()) {
+            return 'query';
+        }
+
+        // 2. Check for Insert
+        if (current.isNewRecord()) {
+            return 'insert';
+        }
+
+        // 3. Check for Delete
+        // isDeleting() is the most reliable flag when operation() is null
+        if (current.isDeleting()) {
+            return 'delete';
+        }
+
+        // 4. Check for Update
+        // If it has a Sys ID, isn't new, and isn't deleting, it must be an update
+        if (current.getUniqueValue() && !current.isDeleting()) {
+            return 'update';
+        }
+
+        return null;
+    },
+
+    type: 'RequestUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-18 14:53:24</sys_created_on>
+        <sys_id>582d86ca479c0f10a0948c64116d439e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RequestUtils</sys_name>
+        <sys_package display_value="AppUtils" source="49474e4247dc0f10a0948c64116d4386">49474e4247dc0f10a0948c64116d4386</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="AppUtils">49474e4247dc0f10a0948c64116d4386</sys_scope>
+        <sys_update_name>sys_script_include_582d86ca479c0f10a0948c64116d439e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-18 14:53:24</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>582d86ca479c0f10a0948c64116d439e</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-18 14:53:24</sys_created_on>
+        <sys_id>9a5d864e47dc0f10a0948c64116d433e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-18 14:53:24</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

@@ -15,20 +15,33 @@ AppConstants.prototype = {
     initialize: function() {
     },
 
+	// Roles
+	Roles : {
+		SecurityOfficer: 'security_officer',
+	},
+
+	// Indicents
+	Incident : {
+		Fields : {
+			AssignedTo: 'assigned_to',
+			Confidential: 'u_confidential',
+		}
+	},
+
     type: 'AppConstants'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2026-04-18 14:41:00</sys_created_on>
         <sys_id>f74a8ec647dc0f10a0948c64116d4338</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>AppConstants</sys_name>
         <sys_package display_value="AppUtils" source="49474e4247dc0f10a0948c64116d4386">49474e4247dc0f10a0948c64116d4386</sys_package>
         <sys_policy/>
         <sys_scope display_value="AppUtils">49474e4247dc0f10a0948c64116d4386</sys_scope>
         <sys_update_name>sys_script_include_f74a8ec647dc0f10a0948c64116d4338</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-04-18 14:41:00</sys_updated_on>
+        <sys_updated_on>2026-04-18 15:02:10</sys_updated_on>
     </sys_script_include>
     <sys_es_latest_script action="INSERT_OR_UPDATE">
         <id>f74a8ec647dc0f10a0948c64116d4338</id>
